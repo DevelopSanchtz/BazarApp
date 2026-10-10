@@ -1,0 +1,1 @@
+Dame una JSON, con id, title, price, description, category, imageURL. Estos datos serán datos fake, usados para ejemplo para correr la app con esta información, hazlo en base a las necesidades de la aplicación, ya que más adelante esta información será reemplazada con datos de una API.
