@@ -4,11 +4,18 @@ import { StateContainer, StateMessage } from './ScreenState.styles';
 
 interface ErrorStateProps {
     message: string;
-    onRetry: () => void;
+    onAction: () => void;
+    actionLabel?: string;
 }
 
-export function ErrorState({ message, onRetry }: ErrorStateProps) {
-    return (
+export function ErrorState(
+    { 
+        message, 
+        onAction,
+        actionLabel = 'Reintentar'
+    }: ErrorStateProps) 
+    {
+        return (
         <StateContainer>
             <Icon 
                 name="cloud-off-outline" 
@@ -20,8 +27,8 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
             </StateMessage>
             
             <Button 
-                label="Reintentar" 
-                onPress={onRetry} 
+                label={actionLabel} 
+                onPress={onAction} 
             />
         </StateContainer>
   );

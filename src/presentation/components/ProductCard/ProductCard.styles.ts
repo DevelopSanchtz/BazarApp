@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const CardContainer = styled.View`
-    flex: 1;
+    flex-grow: 1;
     background-color: ${({ theme }) => theme.colors.surface};
     border-color: ${({ theme }) => theme.colors.border};
     border-width: 1px;

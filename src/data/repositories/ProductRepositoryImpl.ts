@@ -28,4 +28,9 @@ export class ProductRepositoryImpl implements ProductRepository {
 
     return this.pendingRequest;
   }
+
+    async getProductById(id: number): Promise<Product | null> {
+        const products = await this.getProducts();
+        return products.find(product => product.id === id) ?? null;
+  }
 }
