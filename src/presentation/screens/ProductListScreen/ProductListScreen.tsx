@@ -10,12 +10,15 @@ import { useProductFilters } from '../../hooks/useProductFilters';
 import { useProducts } from '../../hooks/useProducts';
 import { Screen } from './ProductListScreen.styles';
 import type { RootStackScreenProps } from '../../navigation/types';
+import { useCart } from '../../state/cart/cartProvider';
+import { CartButton } from '../../components/CartButton/CartButton';
 
 type Props = RootStackScreenProps<'ProductList'>;
 
 export function ProductListScreen({ navigation }: Props) {
 
     const { products, status, retry} = useProducts()
+    const { summary, addToCart } = useCart();
     const {
         query,
         setQuery,
@@ -32,15 +35,22 @@ export function ProductListScreen({ navigation }: Props) {
         [navigation],
     );
 
-    const handleAddToCart = useCallback((product: Product) => {
-        console.log('Agregar:', product.title);
-    }, []);
+    const handleOpenCart = useCallback(() => {
+        navigation.navigate('Cart');
+    }, [navigation]);
 
     const isCatalogReady = status === 'success'
 
     return (
         <Screen>
-            <AppHeader>
+            <AppHeader
+                rightAction = {
+                    <CartButton 
+                        count={summary.totalQuantity}
+                        onPress={handleOpenCart}
+                    />
+                }
+            >
                 {isCatalogReady && (
                     <>
                         <SearchBar 
@@ -73,7 +83,7 @@ export function ProductListScreen({ navigation }: Props) {
                 <ProductGrid
                     products={filteredProducts}
                     onPressProduct={handleOpenDetail}
-                    onAddToCart={handleAddToCart}
+                    onAddToCart={addToCart}
                 />
             )}
         </Screen>

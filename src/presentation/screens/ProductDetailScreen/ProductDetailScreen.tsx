@@ -9,11 +9,11 @@ import { formatPrice } from '../../utils/formatPrice';
 import { getCategoryLabel } from '../../utils/getCategoryLabel';
 import {
     BackButtonWrapper,
+    CartButtonWrapper,
     Category,
     Content,
     Description,
     Divider,
-    Footer,
     ImageSection,
     InfoSection,
     Price,
@@ -22,22 +22,30 @@ import {
     SectionTitle,
     Title,
 } from './ProductDetailScreen.style';
+import { useCart } from '../../state/cart/cartProvider';
+import { CartButton } from '../../components/CartButton/CartButton';
+import { BottomBar } from '../../components/BottomBar/BottomBar';
 
 type Props = RootStackScreenProps<'ProductDetail'>;
 
 export function ProductDetailScreen({ route, navigation }: Props) {
     const { productId } = route.params;
     const { product, status, retry } = useProductDetail(productId);
+    const { summary, addToCart } = useCart();
 
     const handleGoBack = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
 
+    const handleOpenCart = useCallback(() => {
+        navigation.navigate('Cart');
+    }, [navigation]);
+
     const handleAddToCart = useCallback(() => {
         if (product) {
-            console.log('Agregar:', product.title);
+            addToCart(product);
         }
-    }, [product]);
+    }, [product, addToCart]);
 
     if (status === 'loading') {
         return (
@@ -84,6 +92,12 @@ export function ProductDetailScreen({ route, navigation }: Props) {
                         onPress={handleGoBack}
                     />
                     </BackButtonWrapper>
+                    <CartButtonWrapper>
+                        <CartButton
+                            count={summary.totalQuantity}
+                            onPress={handleOpenCart}
+                        />
+                    </CartButtonWrapper>
                 </ImageSection>
 
                 <InfoSection>
@@ -111,12 +125,12 @@ export function ProductDetailScreen({ route, navigation }: Props) {
                 </InfoSection>
             </Content>
 
-            <Footer>
-                <Button 
-                    label="Agregar al carrito" 
-                    onPress={handleAddToCart} 
+            <BottomBar>
+                <Button
+                    label='Añadir al carrito'
+                    onPress={handleAddToCart}
                 />
-            </Footer>
+            </BottomBar>
         </Screen>
     );
 }

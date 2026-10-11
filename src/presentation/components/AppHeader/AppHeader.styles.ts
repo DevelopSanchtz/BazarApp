@@ -16,6 +16,12 @@ padding-horizontal: ${({ theme }) =>
     theme.spacing.lg}px;
 `;
 
+export const HeaderTopRow = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const Logo = styled.Image.attrs({
   resizeMode: 'contain', 
   accessibilityRole: 'image',

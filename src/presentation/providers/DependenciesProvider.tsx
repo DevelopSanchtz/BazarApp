@@ -1,10 +1,12 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { GetProducts } from '../../domain/usecases/getProducts';
 import { GetProductById } from '../../domain/usecases/getProductById';
+import type { PlaceOrder } from '../../domain/usecases/placeOrder';
 
 export interface Dependencies {
   getProducts: GetProducts;
   getProductById: GetProductById
+  placeOrder: PlaceOrder;
 }
 
 const DependenciesContext = createContext<Dependencies | null>(null);

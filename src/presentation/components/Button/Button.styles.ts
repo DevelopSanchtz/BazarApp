@@ -10,6 +10,8 @@ background-color: ${({ theme }) => theme.colors.primary};
 border-radius: ${({ theme }) => theme.radius.sm}px;
 padding: ${({ theme }) => theme.spacing.sm}px 
     ${({ theme }) => theme.spacing.lg}px;
+opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+
 `;
 
 export const ButtonLabel = styled.Text`

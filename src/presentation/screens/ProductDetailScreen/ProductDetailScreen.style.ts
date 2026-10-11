@@ -34,6 +34,14 @@ export const BackButtonWrapper = styled.View
         theme.spacing.md}px;
 `;
 
+export const CartButtonWrapper = styled.View`
+    position: absolute;
+    top: ${({ theme }) => 
+        theme.spacing.md}px;
+    right: ${({ theme }) => 
+        theme.spacing.md}px;
+`;
+
 export const InfoSection = styled.View
 `
     gap: ${({ theme }) => 
@@ -102,17 +110,4 @@ export const Description = styled.Text
     font-size: ${({ theme }) => 
         theme.fontSize.sm}px;
     line-height: 22px;
-`;
-
-export const Footer = styled.View
-`
-    background-color: ${({ theme }) => 
-        theme.colors.surface};
-    border-top-color: ${({ theme }) => 
-        theme.colors.border};
-    border-top-width: 1px;
-    padding: ${({ theme }) => 
-        theme.spacing.md}px
-        ${({ theme }) => 
-            theme.spacing.lg}px;
 `;
