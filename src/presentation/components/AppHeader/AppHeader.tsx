@@ -8,13 +8,14 @@ interface AppHeaderProps {
     rightAction?: ReactNode
 }
 
-export function AppHeader({ children }: AppHeaderProps) {
+export function AppHeader({ rightAction, children }: AppHeaderProps) {
   return (
     <HeaderContainer>
       <HeaderTopRow>
           <Logo 
               source={logoSource} 
           />
+          {rightAction}
       </HeaderTopRow>
         {children}
     </HeaderContainer>
