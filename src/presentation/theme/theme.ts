@@ -3,9 +3,9 @@ export const appTheme = {
         background: '#F5F3EF',
         surface: '#FFFFFF',
         border: '#E6E1DA',
-        primary: '#D9480F',
+        primary: '#0D8566',
         onPrimary: '#FFFFFF',
-        textPrimary: '#1F1A17',
+        textPrimary: '#504E5B',
         textSecondary: '#6B635C',
     },
     spacing: {
