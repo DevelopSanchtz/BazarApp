@@ -18,12 +18,18 @@ export const appTheme = {
     radius: {
         sm: 8,
         md: 12,
+        pill: 999,
     },
     fontSize: {
         xs: 12,
-        sm: 24,
+        sm: 14,
         md: 16,
         lg: 20,
+    },
+    iconSize: {
+        sm: 16,
+        md: 20,
+        lg: 24,
     }
 }
 
