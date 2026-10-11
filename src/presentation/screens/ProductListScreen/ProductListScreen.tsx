@@ -1,17 +1,17 @@
 import { useCallback } from 'react';
-import { FlatList } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import type { Product } from '../../../domain/entities/Product';
 import { AppHeader } from '../../components/AppHeader/AppHeader';
 import { CategoryFilter } from '../../components/CategoryFilter/CategoryFilter';
-import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { ProductGrid } from '../../components/ProductGrid/ProductGrid';
+import { ErrorState } from '../../components/ScreenState/ErrorState';
+import { LoadingState } from '../../components/ScreenState/LoadingState';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { useProductFilters } from '../../hooks/useProductFilters';
-import { EmptyMessage, GridItem, Screen } from './ProductListScreen.styles';
-import { SAMPLE_PRODUCTS } from './sampleProducts';
+import { useProducts } from '../../hooks/useProducts';
+import { Screen } from './ProductListScreen.styles';
 
 export function ProductListScreen() {
-    const theme = useTheme();
+    const { products, status, retry} = useProducts()
     const {
         query,
         setQuery,
@@ -19,7 +19,7 @@ export function ProductListScreen() {
         setSelectedCategory,
         categories,
         filteredProducts,
-  } = useProductFilters(SAMPLE_PRODUCTS);
+  } = useProductFilters(products);
 
     const handleOpenDetail = useCallback((
         productId: number
@@ -31,42 +31,46 @@ export function ProductListScreen() {
         console.log('Agregar:', product.title);
     }, []);
 
-    return (
-    <Screen>
-        <AppHeader>
-        <SearchBar 
-            value={query} 
-            onChangeText={setQuery} 
-        />
-        <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-        />
-      </AppHeader>
+    const isCatalogReady = status === 'success'
 
-      <FlatList
-        data={filteredProducts}
-        keyExtractor={item => String(item.id)}
-        numColumns={2}
-        contentContainerStyle={{ padding: theme.spacing.md }}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        renderItem={({ item }) => (
-        <GridItem>
-            <ProductCard
-                product={item}
-                onPress={handleOpenDetail}
-                onAddToCart={handleAddToCart}
-            />
-        </GridItem>
-        )}
-        ListEmptyComponent={
-            <EmptyMessage>
-                No encontramos productos con esa búsqueda.
-            </EmptyMessage>
-        }
-      />
-    </Screen>
+    return (
+        <Screen>
+            <AppHeader>
+                {isCatalogReady && (
+                    <>
+                        <SearchBar 
+                            value={query} 
+                            onChangeText={setQuery} 
+                        />
+                        <CategoryFilter
+                            categories={categories}
+                            selectedCategory={selectedCategory}
+                            onSelectCategory={setSelectedCategory}
+                        />
+                    </>
+                )}
+            </AppHeader>
+
+            {status === 'loading' && 
+                <LoadingState
+                    message='Cargando los productos...'
+                />
+            }
+
+            {status === 'error' && (
+                <ErrorState
+                    message='No pudimos cargar los productos. Por favor, intente nuevamente'
+                    onRetry={retry}
+                />
+            )}
+
+            {isCatalogReady && (
+                <ProductGrid
+                    products={filteredProducts}
+                    onPressProduct={handleOpenDetail}
+                    onAddToCart={handleAddToCart}
+                />
+            )}
+        </Screen>
   );
 }
