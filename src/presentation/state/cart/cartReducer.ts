@@ -12,7 +12,8 @@ export type CartAction =
     | { type: 'increase'; productId: number }
     | { type: 'decrease'; productId: number }
     | { type: 'remove'; productId: number }
-    | { type: 'clear' };
+    | { type: 'clear' }
+    | { type: 'hydrate'; items: readonly CartItem[] };
 
 export function cartReducer(
     items: readonly CartItem[],
@@ -20,14 +21,16 @@ export function cartReducer(
 ): readonly CartItem[] {
     switch (action.type) {
         case 'add':
-        return addProductToCart(items, action.product);
+            return addProductToCart(items, action.product);
         case 'increase':
-        return increaseQuantity(items, action.productId);
+            return increaseQuantity(items, action.productId);
         case 'decrease':
-        return decreaseQuantity(items, action.productId);
+            return decreaseQuantity(items, action.productId);
         case 'remove':
-        return removeProductFromCart(items, action.productId);
+            return removeProductFromCart(items, action.productId);
         case 'clear':
-        return [];
+            return [];
+        case 'hydrate':
+            return action.items;
     }
 }

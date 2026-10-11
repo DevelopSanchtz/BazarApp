@@ -1,10 +1,12 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useReducer,
   type ReactNode,
 } from 'react';
+import { useCartPersistence } from './useCartPersistence';
 import type { CartItem } from '../../../domain/entities/CartItem';
 import type { CartSummary } from '../../../domain/entities/CartSummary';
 import type { Product } from '../../../domain/entities/Product';
@@ -27,6 +29,14 @@ const EMPTY_CART: readonly CartItem[] = [];
 
 export function CartProvider({ children }: { children: ReactNode }) {
     const [items, dispatch] = useReducer(cartReducer, EMPTY_CART);
+
+    const hydrate = useCallback(
+        (storedItems: readonly CartItem[]) =>
+            dispatch({ type: 'hydrate', items: storedItems }),
+        [],
+    );
+
+  useCartPersistence(items, hydrate);
 
     const summary = useMemo(() => calculateCartSummary(items), [items]);
 
